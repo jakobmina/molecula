@@ -13,7 +13,7 @@ from h7_bridge import run_h7_bridge
 from h7_qnn_hash import generate_metriplectic_hash
 from utf8_qnn_poc import string_to_qnn_seed
 
-from H7-Unified-V2 import (
+from h7_unified_v2 import (
     H7Node,
     H7SubgroupEngine,
     DoubleCoverH7,
