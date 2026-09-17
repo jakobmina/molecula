@@ -2,7 +2,7 @@
 h7_bridge.py — Bridge bidireccional H7 Python ↔ C metriplectic
 Exporta los estados del pipeline H7 al formato exacto de metriplectic.h
 """
-import math, struct, json, ctypes
+import math, struct, json, ctypes, os
 import numpy as np
 
 pi = math.pi
@@ -199,14 +199,18 @@ def structs_to_dict(ms: MetriplecticState, to: TorsionObservables,
     return data
 
 
-def export_json(data: dict, path: str = "h7_state.json"):
+def export_json(data: dict, path: str = "h7_state.json", verbose: bool = True):
+    dirname = os.path.dirname(path)
+    if dirname:
+        os.makedirs(dirname, exist_ok=True)
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
-    print(f"[h7_bridge] JSON exportado → {path}")
+    if verbose:
+        print(f"[h7_bridge] JSON exportado → {path}")
 
 
 def export_binary(ms: MetriplecticState, to: TorsionObservables,
-                  ec: EstadoCuantico, path: str = "h7_state.bin"):
+                  ec: EstadoCuantico, path: str = "h7_state.bin", verbose: bool = True):
     """
     Exporta las structs en binario little-endian.
     Layout: MetriplecticState (7 doubles) | TorsionObservables (4 doubles) | EstadoCuantico (8 doubles)
@@ -218,9 +222,13 @@ def export_binary(ms: MetriplecticState, to: TorsionObservables,
         to.energy_density, to.entropy_gradient, to.spatial_torsion, to.chirality,
         *list(ec.psi)
     )
+    dirname = os.path.dirname(path)
+    if dirname:
+        os.makedirs(dirname, exist_ok=True)
     with open(path, "wb") as f:
         f.write(data)
-    print(f"[h7_bridge] Binary exportado → {path}  ({len(data)} bytes)")
+    if verbose:
+        print(f"[h7_bridge] Binary exportado → {path}  ({len(data)} bytes)")
 
 
 # ────────────────────────────────────────────
@@ -234,7 +242,8 @@ def run_h7_bridge(n: int,
                   export_path: str = "h7_state",
                   export_format: str = "both",
                   extra_metrics: dict = None,
-                  is_char: bool = False) -> dict:
+                  is_char: bool = False,
+                  verbose: bool = True) -> dict:
     """
     Punto de entrada unificado.
     Recibe los outputs del script H7 y devuelve todas las structs C populadas.
@@ -248,6 +257,9 @@ def run_h7_bridge(n: int,
         export_format: "json" | "binary" | "both" | "none"
         extra_metrics: dict opcional de métricas extra (ej. covarianza)
         is_char      : Flag indicando si statevector proviene de un carácter UTF-8
+        verbose      : si es False, no imprime la línea "[h7_bridge] ... exportado"
+                       por archivo — útil en loops (ej. exportar un stream de
+                       cientos de caracteres uno por uno)
 
     Returns:
         dict con todas las structs y el dict serializable
@@ -262,9 +274,9 @@ def run_h7_bridge(n: int,
     data = structs_to_dict(ms, to, ec, grid, extra_metrics)
 
     if export_format in ("json", "both"):
-        export_json(data, path=export_path + ".json")
+        export_json(data, path=export_path + ".json", verbose=verbose)
     if export_format in ("binary", "both"):
-        export_binary(ms, to, ec, path=export_path + ".bin")
+        export_binary(ms, to, ec, path=export_path + ".bin", verbose=verbose)
 
     return {"MetriplecticState": ms, "TorsionObservables": to,
             "EstadoCuantico": ec, "QNNGrid": grid, "dict": data}

@@ -1,0 +1,73 @@
+{
+  "MetriplecticState": {
+    "psi": -0.6996914284169874,
+    "v": -1.0,
+    "energy": 0.0,
+    "q": {
+      "w": 1.0,
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "TorsionObservables": {
+    "energy_density": 0.0,
+    "entropy_gradient": 0.9934924827250916,
+    "spatial_torsion": -0.7168146928204138,
+    "chirality": -1.0
+  },
+  "EstadoCuantico": {
+    "psi": [
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "QNNGrid": {
+    "learning_rate": 0.6180339887498948,
+    "layers": [
+      {
+        "weight": 0.22048296536790724,
+        "bias": 0.0,
+        "pair_indices": [
+          1,
+          6
+        ]
+      },
+      {
+        "weight": -0.7079807443818846,
+        "bias": 0.0,
+        "pair_indices": [
+          2,
+          5
+        ]
+      },
+      {
+        "weight": -0.07840188815900664,
+        "bias": 0.0,
+        "pair_indices": [
+          3,
+          4
+        ]
+      },
+      {
+        "weight": 1.0,
+        "bias": 2.0,
+        "pair_indices": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "ExtraMetrics": {
+    "final_covariance": -0.01262664794921875,
+    "final_asymmetry": -0.037109375,
+    "final_dist_alt": 0.03919869833711491
+  }
+}

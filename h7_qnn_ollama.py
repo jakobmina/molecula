@@ -157,6 +157,7 @@ def export_response_to_qernel(text: str, base_n: int):
     print(f"\n[+] Encriptando respuesta ({len(text)} chars) para el demonio H7...")
     su2_dummy = np.eye(2, dtype=complex)
     probs_dummy = {'000': 1.0}
+    total = len(text)
     for i, char in enumerate(text):
         try:
             byte_val = char.encode('utf-8')[0]
@@ -181,9 +182,11 @@ def export_response_to_qernel(text: str, base_n: int):
             probabilities=probs_dummy,
             export_path=export_path,
             export_format="binary",
-            is_char=True
+            is_char=True,
+            verbose=False  # evita una línea "[h7_bridge] Binary exportado..." por char
         )
-    print(f"[+] Exportación completada: {len(text)} frames listos en 'his-torial/'.")
+        print(f"\r[+] Exportando frame {i + 1}/{total}...", end="", flush=True)
+    print(f"\n[+] Exportación completada: {total} frames listos en 'his-torial/'.")
 
 def run_hybrid_inference_loop():
     iteration = 1
