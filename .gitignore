@@ -1,0 +1,6 @@
+train.parquet
+
+# Archivos temporales de Python y LibreOffice
+__pycache__/
+*.pyc
+.~lock.*#
