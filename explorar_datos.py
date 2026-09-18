@@ -4,7 +4,7 @@ import pyarrow.parquet as pq
 print("=== 1. INFORMACIÓN DE TAMAÑO Y ESTRUCTURA ===")
 
 # Para train.parquet (analizamos filas y row groups con PyArrow)
-parquet_file = pq.ParquetFile("train.parquet")
+parquet_file = pq.ParquetFile("/kaggle/input/competitions/enveda-CASMI26-molecule-id-mass-spectra/train.parquet")
 print(f"train.parquet -> Filas exactas: {parquet_file.metadata.num_rows:,}")
 print(f"train.parquet -> Número de row groups: {parquet_file.metadata.num_row_groups}")
 
